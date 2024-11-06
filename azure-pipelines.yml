@@ -12,7 +12,7 @@ pool:
 stages:
 - stage: Test
   jobs:
-  - job: init
+  - job: validate
     displayName: 'Validation'
     steps:
     - task: TerraformInstaller@1
@@ -43,10 +43,29 @@ stages:
         command: 'plan'
         environmentServiceNameAzureRM: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
         commandOptions: '-input=false'
-
-  # - job: deploy
-  #   displayName: 'Validation'
-  #   dependsOn: init
-  #   steps:
+- stage: deploy
+  - job: apply
+    displayName: 'Deploying'
+    steps:
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
+      displayName: 'Terraform Install'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
+        backendAzureRmResourceGroupName: 'storage'
+        backendAzureRmStorageAccountName: 'liubfiles'
+        backendAzureRmContainerName: 'bestrong-tfstate'
+        backendAzureRmKey: 'devops'
+      displayName: 'Terraform Init'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        environmentServiceNameAzureRM: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
+        commandOptions: '-input=false -auto-approve'
 
 
