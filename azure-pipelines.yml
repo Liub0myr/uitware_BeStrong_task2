@@ -23,6 +23,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
+        backendServiceArm: $(ServiceConnectionName)
         backendAzureRmUseEnvironmentVariablesForAuthentication: true
       displayName: 'Terraform Init'
   - job: check
