@@ -49,7 +49,7 @@ stages:
           TF_VAR_BeStrong_azSQL_password: $(BeStrong_azSQL_password)
 
 - stage: deploy
-  condition: ne(variables['Build.Reason'], 'PullRequest')
+  condition: ne(variables['Build.Reason'], 'PullRequest') # Skip for PR
   jobs:
   - deployment: Deploy
     environment: main # required for manual approval. DO NOT REMOVE!
