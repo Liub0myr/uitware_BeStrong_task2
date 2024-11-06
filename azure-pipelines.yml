@@ -27,6 +27,7 @@ stages:
       displayName: 'Terraform Init'
   - job: check
     displayName: 'Validation'
+    dependsOn: init
     steps:
     - task: TerraformTaskV4@4
       inputs:
