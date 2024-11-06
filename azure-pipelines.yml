@@ -23,8 +23,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        backendServiceArm: $(ServiceConnectionName)
-        backendAzureRmUseEnvironmentVariablesForAuthentication: true
+        environmentServiceNameAzureRM: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
       displayName: 'Terraform Init'
   - job: check
     displayName: 'Validation'
@@ -38,5 +37,6 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'plan'
+        environmentServiceNameAzureRM: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
 
 
