@@ -9,9 +9,6 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-parameters:
-- env: 'main'
-
 stages:
 - stage: Test
   jobs:
