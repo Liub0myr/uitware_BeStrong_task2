@@ -38,11 +38,15 @@ stages:
         provider: 'azurerm'
         command: 'validate'
     - task: TerraformTaskV4@4
+      displayName: 'Terraform plan'
       inputs:
         provider: 'azurerm'
         command: 'plan'
         environmentServiceNameAzureRM: $(environmentServiceNameAzureRM)
         commandOptions: '-input=false'
+      env:
+          TF_VAR_BeStrong_azSQL_login: $(BeStrong_azSQL_login)
+          TF_VAR_BeStrong_azSQL_password: $(BeStrong_azSQL_password)
 
 - stage: deploy
   condition: eq(variables['Build.Reason'], 'IndividualCI')  # Runs only on commits, not on PRs
@@ -68,6 +72,7 @@ stages:
               backendAzureRmKey: '$(backendAzureRmKey).tfstate'
             displayName: 'Terraform Init'
           - task: TerraformTaskV4@4
+            displayName: 'Terraform Apply'
             inputs:
               provider: 'azurerm'
               command: 'plan'
