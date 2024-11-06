@@ -29,9 +29,6 @@ stages:
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: '$(backendAzureRmKey).tfstate'
       displayName: 'Terraform Init'
-  # - job: check
-  #   displayName: 'Check'
-  #   steps:
     - task: TerraformTaskV4@4
       displayName: 'Validate'
       inputs:
@@ -47,15 +44,6 @@ stages:
       env:
           TF_VAR_BeStrong_azSQL_login: $(BeStrong_azSQL_login)
           TF_VAR_BeStrong_azSQL_password: $(BeStrong_azSQL_password)
-    - task: GitHubComment@0
-      condition: eq(variables['Build.Reason'], 'PullRequest')
-      inputs:
-        repo: '$(Build.Repository.Name)'
-        repoToken: $(System.AccessToken)
-        comment: |
-          ## Terraform Validation and Plan Results
-          - **Validation**: $(System.JobStatus)
-          - **Plan**: $(System.JobStatus)
 
 - stage: deploy
   condition: ne(variables['Build.Reason'], 'PullRequest') # Skip for PR
@@ -90,4 +78,3 @@ stages:
             env:
                 TF_VAR_BeStrong_azSQL_login: $(BeStrong_azSQL_login)
                 TF_VAR_BeStrong_azSQL_password: $(BeStrong_azSQL_password)
-
