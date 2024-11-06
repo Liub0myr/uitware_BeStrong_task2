@@ -10,7 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: $(Build.SourceBranchName)_terraform_vars
+  - group: terraform_vars
 
 stages:
 - stage: Test
