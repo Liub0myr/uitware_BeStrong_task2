@@ -9,6 +9,9 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  - group: $(Build.SourceBranchName)_terraform_vars
+
 stages:
 - stage: Test
   jobs:
@@ -23,11 +26,11 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        backendServiceArm: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
-        backendAzureRmResourceGroupName: 'storage'
-        backendAzureRmStorageAccountName: 'liubfiles'
-        backendAzureRmContainerName: 'bestrong-tfstate'
-        backendAzureRmKey: 'devops'
+        backendServiceArm: $(backendServiceArm)
+        backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
+        backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
+        backendAzureRmContainerName: $(backendAzureRmContainerName)
+        backendAzureRmKey: $(backendAzureRmKey)
       displayName: 'Terraform Init'
   # - job: check
   #   displayName: 'Check'
@@ -41,7 +44,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'plan'
-        environmentServiceNameAzureRM: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
+        environmentServiceNameAzureRM: $(environmentServiceNameAzureRM)
         commandOptions: '-input=false'
 - stage: deploy
   - job: apply
@@ -55,17 +58,19 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        backendServiceArm: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
-        backendAzureRmResourceGroupName: 'storage'
-        backendAzureRmStorageAccountName: 'liubfiles'
-        backendAzureRmContainerName: 'bestrong-tfstate'
-        backendAzureRmKey: 'devops'
+        backendServiceArm: $(backendServiceArm)
+        backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
+        backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
+        backendAzureRmContainerName: $(backendAzureRmContainerName)
+        backendAzureRmKey: $(backendAzureRmKey)
       displayName: 'Terraform Init'
     - task: TerraformTaskV4@4
       inputs:
         provider: 'azurerm'
         command: 'plan'
-        environmentServiceNameAzureRM: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
+        environmentServiceNameAzureRM: $(environmentServiceNameAzureRM)
         commandOptions: '-input=false -auto-approve'
-
+      env:
+          TF_VAR_BeStrong_azSQL_login: $(BeStrong_azSQL_login)
+          TF_VAR_BeStrong_azSQL_password: $(BeStrong_azSQL_password)
 
