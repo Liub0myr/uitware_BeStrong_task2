@@ -47,6 +47,7 @@ stages:
         environmentServiceNameAzureRM: $(environmentServiceNameAzureRM)
         commandOptions: '-input=false'
 - stage: deploy
+  jobs:
   - job: apply
     displayName: 'Deploying'
     steps:
