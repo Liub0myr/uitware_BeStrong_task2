@@ -10,7 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 parameters:
-  env: 'main'
+- env: 'main'
 
 stages:
 - stage: Test
