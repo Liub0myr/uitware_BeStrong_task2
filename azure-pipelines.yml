@@ -30,10 +30,9 @@ stages:
         backendAzureRmKey: 'devops'
       displayName: 'Terraform Init'
   - job: check
-    displayName: 'Validation'
-    dependsOn: init
-    steps:
+    displayName: 'Check'
     - task: TerraformTaskV4@4
+      displayName: 'Validate'
       inputs:
         provider: 'azurerm'
         command: 'validate'
@@ -41,5 +40,11 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'plan'
+
+
+  # - job: deploy
+  #   displayName: 'Validation'
+  #   dependsOn: init
+  #   steps:
 
 
