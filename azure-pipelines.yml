@@ -10,7 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: terraform_vars
+  - group: terraform-light
 
 stages:
 - stage: Test
@@ -30,7 +30,7 @@ stages:
         backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
         backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
-        backendAzureRmKey: $(backendAzureRmKey)
+        backendAzureRmKey: '$(backendAzureRmKey).tfstate'
       displayName: 'Terraform Init'
   # - job: check
   #   displayName: 'Check'
@@ -47,6 +47,8 @@ stages:
         environmentServiceNameAzureRM: $(environmentServiceNameAzureRM)
         commandOptions: '-input=false'
 - stage: deploy
+  variables:
+    - group: terraform_creds
   jobs:
   - job: apply
     displayName: 'Deploying'
@@ -63,7 +65,7 @@ stages:
         backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
         backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
-        backendAzureRmKey: $(backendAzureRmKey)
+        backendAzureRmKey: '$(backendAzureRmKey).tfstate'
       displayName: 'Terraform Init'
     - task: TerraformTaskV4@4
       inputs:
