@@ -13,7 +13,7 @@ stages:
 - stage: Test
   jobs:
   - job: init
-    displayName: 'Initialization'
+    displayName: 'Validation'
     steps:
     - task: TerraformInstaller@1
       inputs:
@@ -42,7 +42,7 @@ stages:
         provider: 'azurerm'
         command: 'plan'
         environmentServiceNameAzureRM: 'Azure for Students(3616b9f9-5e04-488f-87ac-d012d9d36a69)'
-
+        commandOptions: '-input=false'
 
   # - job: deploy
   #   displayName: 'Validation'
