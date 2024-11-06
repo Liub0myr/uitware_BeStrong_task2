@@ -10,7 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: terraform-light
+  - group: terraform_vars
 
 stages:
 - stage: Test
@@ -47,11 +47,9 @@ stages:
         environmentServiceNameAzureRM: $(environmentServiceNameAzureRM)
         commandOptions: '-input=false'
 - stage: deploy
-  variables:
-    - group: terraform_creds
   jobs:
-  - job: apply
-    displayName: 'Deploying'
+  - deployment: Deploy
+    environment: main # required for manual approval. DO NOT REMOVE!
     steps:
     - task: TerraformInstaller@1
       inputs:
