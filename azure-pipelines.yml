@@ -29,9 +29,9 @@ stages:
         backendAzureRmContainerName: 'bestrong-tfstate'
         backendAzureRmKey: 'devops'
       displayName: 'Terraform Init'
-  - job: check
-    displayName: 'Check'
-    steps:
+  # - job: check
+  #   displayName: 'Check'
+  #   steps:
     - task: TerraformTaskV4@4
       displayName: 'Validate'
       inputs:
