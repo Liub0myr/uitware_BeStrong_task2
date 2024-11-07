@@ -51,7 +51,7 @@ stages:
   - job: deploy
     displayName: 'Deploy'
     variables:
-    - group: terraform_creds
+    - group: manual_approval # # required for manual approval. DO NOT REMOVE!
     steps:
     - task: TerraformInstaller@1
       inputs:
