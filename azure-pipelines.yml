@@ -71,7 +71,7 @@ stages:
       displayName: 'Terraform Apply'
       inputs:
         provider: 'azurerm'
-        command: 'plan'
+        command: 'apply'
         environmentServiceNameAzureRM: $(environmentServiceNameAzureRM)
         commandOptions: '-input=false -auto-approve'
       env:
