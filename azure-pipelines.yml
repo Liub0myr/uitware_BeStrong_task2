@@ -48,33 +48,32 @@ stages:
 - stage: deploy
   condition: ne(variables['Build.Reason'], 'PullRequest') # Skip for PR
   jobs:
-  - deployment: Deploy
-    environment: main # required for manual approval. DO NOT REMOVE!
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: TerraformInstaller@1
-            inputs:
-              terraformVersion: 'latest'
-            displayName: 'Terraform Install'
-          - task: TerraformTaskV4@4
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              backendServiceArm: $(backendServiceArm)
-              backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
-              backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
-              backendAzureRmContainerName: $(backendAzureRmContainerName)
-              backendAzureRmKey: '$(backendAzureRmKey).tfstate'
-            displayName: 'Terraform Init'
-          - task: TerraformTaskV4@4
-            displayName: 'Terraform Apply'
-            inputs:
-              provider: 'azurerm'
-              command: 'plan'
-              environmentServiceNameAzureRM: $(environmentServiceNameAzureRM)
-              commandOptions: '-input=false -auto-approve'
-            env:
-                TF_VAR_BeStrong_azSQL_login: $(BeStrong_azSQL_login)
-                TF_VAR_BeStrong_azSQL_password: $(BeStrong_azSQL_password)
+  - job: deploy
+    displayName: 'Deploy'
+    variables:
+    - group: manual_approval # # required for manual approval. DO NOT REMOVE!
+    steps:
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
+      displayName: 'Terraform Install'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: $(backendServiceArm)
+        backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
+        backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
+        backendAzureRmContainerName: $(backendAzureRmContainerName)
+        backendAzureRmKey: '$(backendAzureRmKey).tfstate'
+      displayName: 'Terraform Init'
+    - task: TerraformTaskV4@4
+      displayName: 'Terraform Apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        environmentServiceNameAzureRM: $(environmentServiceNameAzureRM)
+        commandOptions: '-input=false -auto-approve'
+      env:
+          TF_VAR_BeStrong_azSQL_login: $(BeStrong_azSQL_login)
+          TF_VAR_BeStrong_azSQL_password: $(BeStrong_azSQL_password)
